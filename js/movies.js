@@ -7,6 +7,7 @@
 // -------------------------------------------------------------
 const listView = document.getElementById("list-view");
 const registerView = document.getElementById("register-view");
+const detailView = document.getElementById("detail-view");
 const listControlsEl = document.getElementById("list-controls");
 const listSearchEl = document.getElementById("list-search");
 const genreFilterEl = document.getElementById("genre-filter");
@@ -31,12 +32,20 @@ const NO_GENRE_LABEL = "ジャンル未設定";
 // -------------------------------------------------------------
 function showListView() {
   registerView.hidden = true;
+  detailView.hidden = true;
   listView.hidden = false;
 }
 
 function showRegisterView() {
   listView.hidden = true;
+  detailView.hidden = true;
   registerView.hidden = false;
+}
+
+function showDetailView() {
+  listView.hidden = true;
+  registerView.hidden = true;
+  detailView.hidden = false;
 }
 
 goRegisterButton.addEventListener("click", showRegisterView);
@@ -97,7 +106,9 @@ function movieCardHtml(movie) {
     : "<div class='card-poster no-image'>画像なし</div>";
 
   return (
-    "<div class='movie-card'>" +
+    "<div class='movie-card' data-id='" +
+    movie.id +
+    "'>" +
     poster +
     "<div class='card-body'>" +
     "<p class='card-title'>" +
@@ -131,10 +142,10 @@ async function loadMovies() {
   listLoadingEl.hidden = false;
   movieSectionsEl.innerHTML = "";
 
-  // created_at（登録日時）の新しい順で取得
+  // created_at（登録日時）の新しい順で、全ての列を取得
   const { data, error } = await sb
     .from("movies")
-    .select("id, title, release_year, poster_url, genres, rating, created_at")
+    .select("*")
     .order("created_at", { ascending: false });
 
   listLoadingEl.hidden = true;
@@ -253,6 +264,49 @@ function renderList() {
   } else {
     renderSingleGenre(movies, currentGenre);
   }
+
+  attachCardClicks();
+}
+
+// 表示済みのカードに「クリックで詳細を開く」動作をつける
+function attachCardClicks() {
+  Array.from(movieSectionsEl.querySelectorAll(".movie-card")).forEach(
+    function (cardEl) {
+      cardEl.addEventListener("click", function () {
+        const id = Number(cardEl.dataset.id);
+        const movie = allMovies.find(function (m) {
+          return m.id === id;
+        });
+        // openDetail は js/detail.js にあります
+        if (movie && typeof openDetail === "function") {
+          openDetail(movie);
+        }
+      });
+    }
+  );
+}
+
+// 一覧の表示だけを作り直す（データ取得はしない）
+function refreshListDisplay() {
+  if (allMovies.length === 0) {
+    listControlsEl.hidden = true;
+    movieSectionsEl.innerHTML = "";
+    listEmptyEl.textContent =
+      "まだ映画が登録されていません。「＋ 映画を登録」から追加できます。";
+    listEmptyEl.hidden = false;
+    return;
+  }
+  listControlsEl.hidden = false;
+  renderGenreFilter();
+  renderList();
+}
+
+// 一覧から1件取り除いて表示を更新する（削除時に使う）
+function removeMovieFromList(id) {
+  allMovies = allMovies.filter(function (m) {
+    return m.id !== id;
+  });
+  refreshListDisplay();
 }
 
 // 「すべて」表示：ジャンルごとの帯（横スクロール）に分ける
