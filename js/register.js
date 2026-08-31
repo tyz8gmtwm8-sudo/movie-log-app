@@ -247,7 +247,11 @@ registerForm.addEventListener("submit", async function (event) {
   clearRegisterMessage();
 
   // 一覧ビューへ切り替えて、最新の一覧を読み込む
-  // （showListView / loadMovies / showListMessage は js/movies.js にあります）
+  // （showListView / loadMovies / showListMessage などは js/movies.js にあります）
+  // 登録した映画が見えるように、絞り込みは「すべて」に戻す
+  currentGenre = "すべて";
+  titleQuery = "";
+  listSearchEl.value = "";
   showListView();
   await loadMovies();
   showListMessage("「" + savedTitle + "」を登録しました。");

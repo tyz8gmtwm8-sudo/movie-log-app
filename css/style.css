@@ -386,14 +386,88 @@ select {
   font-size: 20px;
 }
 
-/* ===== 映画カードの一覧 ===== */
-.movie-list {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
+/* ===== 一覧の絞り込みバー ===== */
+.list-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.list-search {
+  width: 100%;
+}
+
+.genre-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.genre-chip-btn {
+  font-size: 12px;
+  padding: 5px 11px;
+  border: 1px solid #ccd0d8;
+  border-radius: 999px;
+  background: #fff;
+  color: #1f2430;
+  cursor: pointer;
+}
+
+.genre-chip-btn:hover {
+  background: #f1f3f7;
+}
+
+.genre-chip-btn.is-active {
+  background: #4c6ef5;
+  border-color: #4c6ef5;
+  color: #fff;
+}
+
+.chip-count {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* ===== ジャンルごとの帯 ===== */
+.genre-section {
+  margin-bottom: 24px;
+}
+
+.genre-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.genre-section-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6b7280;
+  background: #f1f3f7;
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+/* 横スクロールの行（「すべて」表示） */
+.row-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.row-scroll .movie-card {
+  flex: 0 0 120px;
+}
+
+/* 折り返しグリッド（ジャンルを1つ選んだとき） */
+.card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
 }
 
 .movie-card {
