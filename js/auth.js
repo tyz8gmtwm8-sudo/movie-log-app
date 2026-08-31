@@ -1,9 +1,5 @@
 // ログイン・新規登録・ログアウトの処理をまとめたファイルです。
-
-// Supabase の「クライアント」を作成します。
-// クライアント = Supabase とやり取りするための窓口オブジェクト。
-// window.supabase は、index.html で読み込んだ supabase-js ライブラリが用意します。
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Supabase クライアント（sb）は js/supabaseClient.js で作成しています。
 
 // -------------------------------------------------------------
 // 画面の部品を取得（HTML の id と対応）

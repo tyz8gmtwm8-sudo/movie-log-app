@@ -75,19 +75,109 @@
         </div>
       </section>
 
-      <!-- ================= ログイン後の画面（今はまだ仮） ================= -->
+      <!-- ================= ログイン後の画面：映画を登録 ================= -->
       <section id="app-section" class="card" hidden>
-        <h2>ログインできました 🎉</h2>
-        <p>
-          ここに、これから「映画の一覧」や「登録フォーム」を作っていきます。
-        </p>
+        <h2>映画を登録</h2>
+
+        <!-- タイトルで検索 -->
+        <form id="search-form" class="search-form">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="映画のタイトルで検索"
+            required
+          />
+          <button type="submit" class="btn-primary">検索</button>
+        </form>
+
+        <!-- メッセージ表示欄 -->
+        <p id="register-message" class="message" hidden></p>
+
+        <!-- 検索結果の一覧 -->
+        <ul id="search-results" class="search-results" hidden></ul>
+
+        <!-- 登録フォーム（映画を選ぶと表示される） -->
+        <form id="register-form" class="register-form" hidden>
+          <div class="selected-movie">
+            <img id="selected-poster" alt="ポスター" hidden />
+            <div>
+              <p id="selected-title" class="selected-title"></p>
+              <p id="selected-overview" class="selected-overview"></p>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>評価（0.5刻み）</legend>
+            <div class="star-display" aria-hidden="true">
+              <div class="star-base">★★★★★</div>
+              <div class="star-fill" id="star-fill">★★★★★</div>
+            </div>
+            <div class="rating-row">
+              <input
+                type="range"
+                id="rating-input"
+                min="0.5"
+                max="5"
+                step="0.5"
+                value="3"
+              />
+              <span><strong id="rating-value">3.0</strong> / 5.0</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>ジャンル</legend>
+            <div id="genre-list" class="genre-list"></div>
+          </fieldset>
+
+          <label>
+            感想
+            <textarea id="review-input" rows="4" placeholder="自由に書けます"></textarea>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="spoiler-input" />
+            ネタバレを含む
+          </label>
+
+          <label>
+            鑑賞日
+            <input type="date" id="watched-input" />
+          </label>
+
+          <label>
+            鑑賞方法
+            <select id="method-input">
+              <option value="">未選択</option>
+              <option value="映画館">映画館</option>
+              <option value="配信">配信</option>
+              <option value="ディスク">ディスク（DVD / Blu-ray）</option>
+              <option value="その他">その他</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">この内容で登録</button>
+            <button type="button" id="cancel-register" class="btn-secondary">
+              キャンセル
+            </button>
+          </div>
+        </form>
       </section>
     </main>
 
+    <footer class="site-footer">
+      映画情報の提供：The Movie Database (TMDB)。本アプリは TMDB
+      が承認・認定したものではありません。
+    </footer>
+
     <!-- Supabase のライブラリ（外部から読み込み） -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- 接続情報 → 処理 の順に読み込む -->
+    <!-- 接続情報 → クライアント作成 → 各処理 の順に読み込む -->
     <script src="js/config.js"></script>
+    <script src="js/supabaseClient.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/tmdb.js"></script>
+    <script src="js/register.js"></script>
   </body>
 </html>

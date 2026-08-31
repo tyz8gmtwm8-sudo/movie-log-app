@@ -9,3 +9,9 @@ const SUPABASE_URL = "https://baubslqnsfclpqdvacll.supabase.co";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhdWJzbHFuc2ZjbHBxZHZhY2xsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNTM3NjAsImV4cCI6MjEwMzcyOTc2MH0.5WhtjXvt26F9VDre-W3H4CnVeIwH9aZ_4sV24kRypDk";
+
+// TMDB（The Movie Database）の API キー（v3 auth）。
+// 映画のタイトル検索や、ポスター・あらすじ・ジャンルの取得に使います。
+// 読み取り専用・回数制限つきのキーなので、ブラウザに置いても大きな問題は
+// ありません（気になる場合は後日サーバー経由に変更できます）。
+const TMDB_API_KEY = "d06c6e71765ddd616886afbf6ff561ac";
