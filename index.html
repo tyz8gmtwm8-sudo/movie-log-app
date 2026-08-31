@@ -87,10 +87,23 @@
           </div>
 
           <p id="list-message" class="message success" hidden></p>
+
+          <!-- 絞り込み（タイトル入力＋ジャンルボタン） -->
+          <div id="list-controls" class="list-controls" hidden>
+            <input
+              type="search"
+              id="list-search"
+              class="list-search"
+              placeholder="タイトルで絞り込み"
+            />
+            <div id="genre-filter" class="genre-filter"></div>
+          </div>
+
           <p id="list-loading" class="result-note" hidden>読み込み中...</p>
           <p id="list-empty" class="result-note" hidden></p>
 
-          <ul id="movie-list" class="movie-list"></ul>
+          <!-- ジャンルごとの帯がここに入る -->
+          <div id="movie-sections" class="movie-sections"></div>
         </div>
 
         <!-- ---------- 登録ビュー ---------- -->
