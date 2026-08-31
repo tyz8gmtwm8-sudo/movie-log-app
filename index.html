@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>movie-log-app</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- 画面上部の帯（アプリ名とログアウトボタン） -->
+    <header class="app-bar">
+      <h1 class="app-title">🎬 movie-log-app</h1>
+      <div class="app-bar-right" id="app-bar-right">
+        <span id="user-email" class="user-email"></span>
+        <button id="logout-button" type="button" class="btn-ghost">
+          ログアウト
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- ================= ログイン / 新規登録 画面 ================= -->
+      <section id="auth-section" class="card">
+        <!-- メッセージ表示欄（エラーや成功のお知らせ） -->
+        <p id="message-box" class="message" hidden></p>
+
+        <!-- ログインフォーム -->
+        <div id="login-box">
+          <h2>ログイン</h2>
+          <form id="login-form">
+            <label>
+              メールアドレス
+              <input type="email" id="login-email" required autocomplete="email" />
+            </label>
+            <label>
+              パスワード
+              <input
+                type="password"
+                id="login-password"
+                required
+                autocomplete="current-password"
+              />
+            </label>
+            <button type="submit" class="btn-primary">ログイン</button>
+          </form>
+          <p class="switch-text">
+            アカウントがない方は
+            <a href="#" id="show-signup">新規登録</a>
+          </p>
+        </div>
+
+        <!-- 新規登録フォーム（最初は非表示） -->
+        <div id="signup-box" hidden>
+          <h2>新規登録</h2>
+          <form id="signup-form">
+            <label>
+              メールアドレス
+              <input type="email" id="signup-email" required autocomplete="email" />
+            </label>
+            <label>
+              パスワード（6文字以上）
+              <input
+                type="password"
+                id="signup-password"
+                required
+                autocomplete="new-password"
+              />
+            </label>
+            <button type="submit" class="btn-primary">登録する</button>
+          </form>
+          <p class="switch-text">
+            すでにアカウントをお持ちの方は
+            <a href="#" id="show-login">ログイン</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= ログイン後の画面（今はまだ仮） ================= -->
+      <section id="app-section" class="card" hidden>
+        <h2>ログインできました 🎉</h2>
+        <p>
+          ここに、これから「映画の一覧」や「登録フォーム」を作っていきます。
+        </p>
+      </section>
+    </main>
+
+    <!-- Supabase のライブラリ（外部から読み込み） -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 接続情報 → 処理 の順に読み込む -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>
