@@ -41,16 +41,7 @@ function clearRegisterMessage() {
   registerMessage.hidden = true;
 }
 
-// -------------------------------------------------------------
-// HTML に埋め込む文字列を安全にする（記号でレイアウトが崩れないように）
-// -------------------------------------------------------------
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+// escapeHtml（記号を安全にする関数）は js/util.js にあります。
 
 // -------------------------------------------------------------
 // 星の見た目を、スライダーの値に合わせて更新する
@@ -246,11 +237,18 @@ registerForm.addEventListener("submit", async function (event) {
     return;
   }
 
-  showRegisterMessage(
-    "「" + selectedMovie.title + "」を登録しました。",
-    "success"
-  );
+  // 登録できたら、フォームを片付けて一覧ビューに戻る
+  const savedTitle = selectedMovie.title;
   registerForm.hidden = true;
   selectedMovie = null;
   searchInput.value = "";
+  searchResults.hidden = true;
+  searchResults.innerHTML = "";
+  clearRegisterMessage();
+
+  // 一覧ビューへ切り替えて、最新の一覧を読み込む
+  // （showListView / loadMovies / showListMessage は js/movies.js にあります）
+  showListView();
+  await loadMovies();
+  showListMessage("「" + savedTitle + "」を登録しました。");
 });
