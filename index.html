@@ -201,6 +201,124 @@
         </form>
         </div>
         <!-- ---------- 登録ビュー ここまで ---------- -->
+
+        <!-- ---------- 詳細ビュー ---------- -->
+        <div id="detail-view" hidden>
+          <div class="view-head">
+            <h2>映画の詳細</h2>
+            <button type="button" id="detail-back" class="btn-secondary">
+              ← 一覧に戻る
+            </button>
+          </div>
+
+          <p id="detail-message" class="message" hidden></p>
+
+          <!-- 読み取り表示 -->
+          <div id="detail-read">
+            <div class="detail-head">
+              <img id="detail-poster" alt="ポスター" class="detail-poster" hidden />
+              <div class="detail-head-info">
+                <p id="detail-title" class="detail-title"></p>
+                <div class="detail-rating">
+                  <span class="star-display">
+                    <span class="star-base">★★★★★</span>
+                    <span class="star-fill" id="detail-star-fill">★★★★★</span>
+                  </span>
+                  <span><strong id="detail-rating-num"></strong> / 5.0</span>
+                </div>
+                <div id="detail-genres" class="detail-genres"></div>
+                <p id="detail-meta" class="detail-meta"></p>
+              </div>
+            </div>
+
+            <p id="detail-overview" class="detail-overview"></p>
+
+            <div class="detail-review-block">
+              <h3>感想</h3>
+              <p id="detail-spoiler-note" hidden>
+                ネタバレを含みます（クリックで表示）
+              </p>
+              <p id="detail-review" class="detail-review"></p>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="detail-edit" class="btn-primary">
+                編集
+              </button>
+              <button type="button" id="detail-delete" class="btn-danger">
+                削除
+              </button>
+            </div>
+          </div>
+
+          <!-- 編集フォーム -->
+          <form id="detail-edit-form" hidden>
+            <div class="detail-head">
+              <img id="edit-poster" alt="ポスター" class="detail-poster" hidden />
+              <div class="detail-head-info">
+                <p id="edit-title" class="detail-title"></p>
+              </div>
+            </div>
+
+            <fieldset>
+              <legend>評価（0.5刻み）</legend>
+              <div class="star-display" aria-hidden="true">
+                <div class="star-base">★★★★★</div>
+                <div class="star-fill" id="edit-star-fill">★★★★★</div>
+              </div>
+              <div class="rating-row">
+                <input
+                  type="range"
+                  id="edit-rating"
+                  min="0.5"
+                  max="5"
+                  step="0.5"
+                  value="3"
+                />
+                <span><strong id="edit-rating-value">3.0</strong> / 5.0</span>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>ジャンル</legend>
+              <div id="edit-genre-list" class="genre-list"></div>
+            </fieldset>
+
+            <label>
+              感想
+              <textarea id="edit-review" rows="4"></textarea>
+            </label>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="edit-spoiler" />
+              ネタバレを含む
+            </label>
+
+            <label>
+              鑑賞日
+              <input type="date" id="edit-watched" />
+            </label>
+
+            <label>
+              鑑賞方法
+              <select id="edit-method">
+                <option value="">未選択</option>
+                <option value="映画館">映画館</option>
+                <option value="配信">配信</option>
+                <option value="ディスク">ディスク（DVD / Blu-ray）</option>
+                <option value="その他">その他</option>
+              </select>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">保存</button>
+              <button type="button" id="edit-cancel" class="btn-secondary">
+                キャンセル
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- ---------- 詳細ビュー ここまで ---------- -->
       </section>
     </main>
 
@@ -218,6 +336,7 @@
     <script src="js/auth.js"></script>
     <script src="js/tmdb.js"></script>
     <script src="js/movies.js"></script>
+    <script src="js/detail.js"></script>
     <script src="js/register.js"></script>
   </body>
 </html>
