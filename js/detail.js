@@ -47,6 +47,13 @@ const detailOverview = document.getElementById("detail-overview");
 const detailSpoilerNote = document.getElementById("detail-spoiler-note");
 const detailReview = document.getElementById("detail-review");
 
+const snsToggleButton = document.getElementById("sns-toggle");
+const snsPanel = document.getElementById("sns-panel");
+const snsIncludeReview = document.getElementById("sns-include-review");
+const snsText = document.getElementById("sns-text");
+const snsCount = document.getElementById("sns-count");
+const snsCopyButton = document.getElementById("sns-copy");
+
 const editPoster = document.getElementById("edit-poster");
 const editTitle = document.getElementById("edit-title");
 const editRating = document.getElementById("edit-rating");
@@ -80,6 +87,7 @@ function clearDetailMessage() {
 // -------------------------------------------------------------
 function openDetail(movie) {
   currentMovie = movie;
+  snsPanel.hidden = true; // 前の映画の投稿文が残らないように閉じる
   renderDetailRead(movie);
   detailEditForm.hidden = true;
   detailRead.hidden = false;
@@ -138,7 +146,119 @@ function renderDetailRead(movie) {
     detailReview.classList.remove("is-spoiler");
     detailSpoilerNote.hidden = true;
   }
+
+  // SNS 投稿文パネルが開いていれば、新しい内容で作り直す
+  if (!snsPanel.hidden) {
+    regenerateSnsText();
+  }
 }
+
+// -------------------------------------------------------------
+// SNS 投稿文の生成
+// -------------------------------------------------------------
+
+// 評価から「★★★★☆」の文字列を作る（0.5 は数値で補うので切り捨て表示）
+function buildStarString(rating) {
+  const filled = Math.floor(rating);
+  return "★".repeat(filled) + "☆".repeat(5 - filled);
+}
+
+// ハッシュタグ用に、区切り記号などを取り除く
+function toHashtag(text) {
+  const cleaned = String(text).replace(
+    /[\s　・:：!！?？.,、。/｜|()（）\[\]"'’＆&]/g,
+    ""
+  );
+  return cleaned ? "#" + cleaned : "";
+}
+
+// 投稿文の本文を組み立てる
+function buildSnsText(movie, includeReview) {
+  const year = movie.release_year ? "（" + movie.release_year + "）" : "";
+  const rating = Number(movie.rating) || 0;
+
+  const lines = [];
+  lines.push("🎬『" + movie.title + "』" + year + "を見ました");
+  lines.push(
+    "評価：" + buildStarString(rating) + " " + rating.toFixed(1) + " / 5.0"
+  );
+
+  // 鑑賞情報の行
+  let watchLine = "";
+  if (movie.watch_method && movie.watched_on) {
+    watchLine = movie.watch_method + "で鑑賞（" + movie.watched_on + "）";
+  } else if (movie.watch_method) {
+    watchLine = movie.watch_method + "で鑑賞";
+  } else if (movie.watched_on) {
+    watchLine = "鑑賞日：" + movie.watched_on;
+  }
+  if (watchLine) lines.push(watchLine);
+
+  // 感想（含める場合のみ）
+  if (includeReview && movie.review) {
+    lines.push("");
+    if (movie.has_spoiler) lines.push("⚠️ネタバレ注意");
+    lines.push(movie.review);
+  }
+
+  // ハッシュタグ
+  const tags = ["#映画記録", toHashtag(movie.title)];
+  const genres = Array.isArray(movie.genres) ? movie.genres : [];
+  genres.forEach(function (name) {
+    const tag = toHashtag(name);
+    if (tag) tags.push(tag);
+  });
+  lines.push("");
+  lines.push(tags.filter(Boolean).join(" "));
+
+  return lines.join("\n");
+}
+
+// テキスト欄と文字数表示を更新する
+function regenerateSnsText() {
+  if (!currentMovie) return;
+  snsText.value = buildSnsText(currentMovie, snsIncludeReview.checked);
+
+  const length = snsText.value.length;
+  snsCount.textContent =
+    "文字数: " + length + "（X: 280以内 / Instagram: 2200以内）";
+  snsCount.classList.toggle("over", length > 280);
+}
+
+// 「SNS投稿文を作る」ボタン → パネルの開閉
+snsToggleButton.addEventListener("click", function () {
+  if (snsPanel.hidden) {
+    // 開くとき：ネタバレ作品なら最初は感想を含めない
+    snsIncludeReview.checked = !currentMovie.has_spoiler;
+    snsPanel.hidden = false;
+    regenerateSnsText();
+  } else {
+    snsPanel.hidden = true;
+  }
+});
+
+// 「感想を含める」チェックの切り替え
+snsIncludeReview.addEventListener("change", regenerateSnsText);
+
+// 「コピー」ボタン
+snsCopyButton.addEventListener("click", async function () {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(snsText.value);
+    } else {
+      snsText.removeAttribute("readonly");
+      snsText.select();
+      document.execCommand("copy");
+      snsText.setAttribute("readonly", "");
+    }
+    showDetailMessage("投稿文をコピーしました。", "success");
+  } catch (e) {
+    showDetailMessage(
+      "コピーできませんでした。テキストを選択して手動でコピーしてください。",
+      "error"
+    );
+  }
+});
 
 // ぼかした感想をクリックしたら表示する
 detailReview.addEventListener("click", function () {

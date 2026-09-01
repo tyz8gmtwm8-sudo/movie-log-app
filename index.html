@@ -249,6 +249,27 @@
                 削除
               </button>
             </div>
+
+            <!-- SNS 投稿文の生成 -->
+            <div class="sns-block">
+              <button type="button" id="sns-toggle" class="btn-secondary">
+                SNS投稿文を作る
+              </button>
+
+              <div id="sns-panel" hidden>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="sns-include-review" />
+                  感想（ネタバレになりうる部分）を含める
+                </label>
+                <textarea id="sns-text" rows="10" readonly></textarea>
+                <p id="sns-count" class="sns-count"></p>
+                <div class="form-actions">
+                  <button type="button" id="sns-copy" class="btn-primary">
+                    コピー
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- 編集フォーム -->

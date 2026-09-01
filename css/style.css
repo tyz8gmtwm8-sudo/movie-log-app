@@ -664,6 +664,35 @@ select {
   user-select: none;
 }
 
+/* ===== SNS 投稿文パネル ===== */
+.sns-block {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e8ee;
+}
+
+#sns-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#sns-text {
+  width: 100%;
+}
+
+.sns-count {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.sns-count.over {
+  color: #c92a2a;
+  font-weight: 700;
+}
+
 /* ===== ページ下部の表記 ===== */
 .site-footer {
   max-width: 560px;
