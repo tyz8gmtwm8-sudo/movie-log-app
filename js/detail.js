@@ -54,6 +54,12 @@ const snsText = document.getElementById("sns-text");
 const snsCount = document.getElementById("sns-count");
 const snsCopyButton = document.getElementById("sns-copy");
 
+const cardToggleButton = document.getElementById("card-toggle");
+const cardPanel = document.getElementById("card-panel");
+const cardSizeSelect = document.getElementById("card-size");
+const cardCanvas = document.getElementById("card-canvas");
+const cardDownloadButton = document.getElementById("card-download");
+
 const editPoster = document.getElementById("edit-poster");
 const editTitle = document.getElementById("edit-title");
 const editRating = document.getElementById("edit-rating");
@@ -88,6 +94,7 @@ function clearDetailMessage() {
 function openDetail(movie) {
   currentMovie = movie;
   snsPanel.hidden = true; // 前の映画の投稿文が残らないように閉じる
+  cardPanel.hidden = true; // カード画像パネルも閉じる
   renderDetailRead(movie);
   detailEditForm.hidden = true;
   detailRead.hidden = false;
@@ -147,9 +154,12 @@ function renderDetailRead(movie) {
     detailSpoilerNote.hidden = true;
   }
 
-  // SNS 投稿文パネルが開いていれば、新しい内容で作り直す
+  // 各パネルが開いていれば、新しい内容で作り直す
   if (!snsPanel.hidden) {
     regenerateSnsText();
+  }
+  if (!cardPanel.hidden) {
+    refreshReviewCard();
   }
 }
 
@@ -255,6 +265,47 @@ snsCopyButton.addEventListener("click", async function () {
   } catch (e) {
     showDetailMessage(
       "コピーできませんでした。テキストを選択して手動でコピーしてください。",
+      "error"
+    );
+  }
+});
+
+// -------------------------------------------------------------
+// レビューカード画像
+// -------------------------------------------------------------
+
+// 現在の設定でカードを描き直す（renderReviewCard は js/card.js）
+async function refreshReviewCard() {
+  if (!currentMovie) return;
+  await renderReviewCard(
+    currentMovie,
+    { size: cardSizeSelect.value },
+    cardCanvas
+  );
+}
+
+// 「レビューカード画像を作る」ボタン → パネルの開閉
+cardToggleButton.addEventListener("click", function () {
+  if (cardPanel.hidden) {
+    cardPanel.hidden = false;
+    refreshReviewCard();
+  } else {
+    cardPanel.hidden = true;
+  }
+});
+
+// サイズの切り替えで描き直す
+cardSizeSelect.addEventListener("change", refreshReviewCard);
+
+// 「画像をダウンロード」ボタン
+cardDownloadButton.addEventListener("click", function () {
+  if (!currentMovie) return;
+  const safeTitle = String(currentMovie.title).replace(/[\\/:*?"<>|]/g, "_");
+  try {
+    downloadCanvas(cardCanvas, safeTitle + "_card.png");
+  } catch (e) {
+    showDetailMessage(
+      "画像を保存できませんでした（ポスター画像の読み込みで制限がかかった可能性があります）。",
       "error"
     );
   }

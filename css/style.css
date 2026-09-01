@@ -693,6 +693,34 @@ select {
   font-weight: 700;
 }
 
+/* ===== レビューカード画像パネル ===== */
+.card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.card-preview {
+  margin-top: 12px;
+}
+
+.card-preview canvas {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #20283a;
+}
+
+.card-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 10px 0 0;
+}
+
 /* ===== ページ下部の表記 ===== */
 .site-footer {
   max-width: 560px;
